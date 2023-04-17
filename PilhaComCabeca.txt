@@ -1,0 +1,112 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct {
+    char titulo[50];
+    char autor[50];
+} Livro;
+
+typedef struct no {
+    Livro l;
+    struct no *proximo;
+} No;
+
+typedef struct {
+    No *topo;
+    int tam;
+} Pilha;
+
+Livro comprar_livro() {
+    Livro l;
+    printf("\nDigite titulo e o autor do livro:\n");
+    scanf("%49[^\n]%*c", l.titulo);
+    scanf("%49[^\n]%*c", l.autor);
+    return l;
+}
+
+void ver_livro(Livro l) {
+    printf("\nTitulo: %s\nAutor: %s\n", l.titulo, l.autor);
+}
+
+void criar_pilha(Pilha *p) {
+    p->topo = NULL;
+    p->tam = 0;
+}
+
+void empilhar(Pilha *p) {
+    No *novo = malloc(sizeof(No));
+
+    if (novo) {
+        novo->l = comprar_livro();
+        novo->proximo = p->topo;
+        p->topo = novo;
+        p->tam++;
+    }
+    else {
+        printf("\nErro ao alocar memoria...\n");
+    }
+}
+
+No* desempilhar(Pilha *p) {
+    if (p->topo != NULL) {
+        No *remover = p->topo;
+        p->topo = remover->proximo;
+        p->tam--;
+        return remover;
+    }
+    else {
+        printf("\nPilha vazia!\n");
+        return NULL;
+    }
+}
+
+void imprimir_pilha(Pilha *p) {
+    No *aux = p->topo;
+    printf("\n----------- PILHA Tam: %d --------------\n", p->tam);
+    while (aux) {
+        ver_livro(aux->l);
+        aux = aux->proximo;
+    }
+    printf("\n--------- FIM PILHA ------------\n");
+}
+
+int main() {
+    Pilha p;
+    int opcao;
+
+    criar_pilha(&p);
+
+    do {
+        printf("\n0 - Sair\n1 - Empilhar\n2 - Desempilhar\n3 - Imprimir\n");
+        scanf("%d", &opcao);
+        getchar();
+
+        switch (opcao) {
+            case 1:
+                empilhar(&p);
+                break;
+            case 2: {
+                No *remover = desempilhar(&p);
+                if (remover) {
+                    printf("\nLivro removido com sucesso!\n");
+                    ver_livro(remover->l);
+                    free(remover);
+                }
+                else {
+                    printf("\nSem Livro para remover.\n");
+                }
+                break;
+            }
+            case 3:
+                imprimir_pilha(&p);
+                break;
+            default:
+                if (opcao != 0) {
+                    printf("\nOpcao invalida!!!\n");
+                }
+        }
+    } while (opcao != 0);
+
+    return 0;
+}
