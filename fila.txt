@@ -1,0 +1,125 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct no {
+    char nome[50];
+    struct no *proximo;
+} No;
+
+
+void adicionar(No **inicio, No **fim) {
+    No *novo = malloc(sizeof(No));
+    if (novo) {
+        printf("\nDigite titulo da pessoa:\n");
+        scanf("%49[^\n]%*c", novo->nome);        
+        if (*fim == NULL) {
+            *inicio = novo;
+            *fim = novo;
+        } else {
+            (*fim)->proximo = novo;
+            *fim = novo;
+        }
+    } else {
+        printf("\nErro ao alocar memoria.\n");
+    }
+}
+
+No* excluir(No **inicio) {
+    if (*inicio) {
+        char temp[50];
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct no {
+    int numero;
+    struct no *proximo;
+} No;
+
+void adicionar(No **inicio, No **fim) {
+    No *novo = malloc(sizeof(No));
+    if (novo) {
+        printf("\nDigite um numero:\n");
+        scanf("%d", &novo->numero);       
+        if (*fim == NULL) {
+            *inicio = novo;
+            *fim = novo;
+        } else {
+            (*fim)->proximo = novo;
+            *fim = novo;
+        }
+        
+    } else {
+        printf("\nErro ao alocar memoria.\n");
+    }
+}
+
+int excluir(No **inicio, No **fim) {
+    if (*inicio) {
+        int temp;
+        No *remover = *inicio;
+        *inicio = remover->proximo;
+        temp = remover->numero;
+        remover->proximo = NULL;
+        free(remover);
+        if(*inicio == NULL) {
+            *fim = NULL;
+        }
+        return temp;
+    } else {
+        printf("\nFila vazia!\n");
+        return -1;
+    }
+}
+
+void imprimir_fila(No *comeco){
+    printf("\t------- FILA --------\n\t");
+    while(comeco){
+        printf("%d ", comeco->numero);
+        comeco = comeco->proximo;
+    }
+    printf("\n\t------- FIM FILA --------\n");
+}
+
+int main() {
+    No *inicio = NULL;
+    No *fim = NULL;
+    int opcao;
+
+    do {
+        printf("\n0 - Sair\n1 - Adicionar\n2 - Excluir\n3 - Imprimir\n");
+        scanf("%d", &opcao);
+        getchar();
+
+        switch (opcao) {
+            case 1:
+                adicionar(&inicio, &fim);
+                break;
+            case 2: {
+                int numero = excluir(&inicio, &fim);
+                if (numero) {
+                    printf("\nElemento removido com sucesso!\n");
+                    printf("\nNumero: %d\n", numero);
+                }
+                else {
+                    printf("\nSem no a remover.\n");
+                }
+                break;
+            }
+            case 3:
+                imprimir_fila(inicio);
+                break;
+            default:
+                if (opcao != 0) {
+                    printf("\nOpcao invalida!!!\n");
+                }
+        }
+    } while (opcao != 0);
+
+    return 0;
+}

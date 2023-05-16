@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct no {
+    char titulo[50];
+    struct no *proximo;
+} No;
+
+typedef struct {
+    No *topo;
+    int tam;
+} Pilha;
+
+
+void empilhar(Pilha *p) {
+    No *novo = malloc(sizeof(No));
+
+    if (novo) {
+        printf("\nDigite titulo do livro:\n");
+        scanf("%49[^\n]%*c", novo->titulo);        
+        novo->proximo = p->topo;
+        p->topo = novo;
+        p->tam++;
+    }
+    else {
+        printf("\nErro ao alocar memoria...\n");
+    }
+}
+
+No* desempilhar(Pilha *p) {
+    if (p->topo != NULL) {
+        char temp[50];
+        No *remover = p->topo;
+        p->topo = remover->proximo;
+        p->tam--;
+        temp = remover-> titulo;
+        free(remover)
+        return temp;
+    }
+    else {
+        printf("\nPilha vazia!\n");
+        return NULL;
+    }
+}
+
+void imprimir_pilha(Pilha *p) {
+    No *aux = p->topo;
+    printf("\n----------- PILHA Tam: %d --------------\n", p->tam);
+    while (aux) {
+        printf("\nTitulo: %s\n", aux->titulo);
+        aux = aux->proximo;
+    }
+    printf("\n--------- FIM PILHA ------------\n");
+}
+
+int main() {
+    Pilha p;
+    p.topo = NULL;
+    p.tam = 0;
+    int opcao;
+
+    do {
+        printf("\n0 - Sair\n1 - Empilhar\n2 - Desempilhar\n3 - Imprimir\n");
+        scanf("%d", &opcao);
+        getchar();
+
+        switch (opcao) {
+            case 1:
+                empilhar(&p);
+                break;
+            case 2: {
+                 char temp[50] = desempilhar(&p);
+                if (remover) {
+                    printf("\nElemento removido com sucesso!\n");
+                    printf("\nTitulo: %s\n", remover->titulo);
+                }
+                else {
+                    printf("\nSem no a remover.\n");
+                }
+                break;
+            }
+            case 3:
+                imprimir_pilha(&p);
+                break;
+            default:
+                if (opcao != 0) {
+                    printf("\nOpcao invalida!!!\n");
+                }
+        }
+    } while (opcao != 0);
+
+    return 0;
+}
